@@ -1,0 +1,82 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 1200px;
+}
+.pageHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.pageTitle {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--gray-900);
+  margin-bottom: 4px;
+}
+.pageSubtitle { font-size: 0.875rem; color: var(--gray-500); }
+
+.tableCard {
+  background: var(--surface);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+.tableToolbar {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--gray-100);
+  background: var(--gray-50);
+}
+.loadingState {
+  display: flex;
+  justify-content: center;
+  padding: 60px;
+}
+
+/* Table overrides */
+.memberCell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.memberAvatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--brand-400), #7c3aed);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.memberName {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--gray-900);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.meBadge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--brand-600);
+  background: var(--brand-50);
+  border: 1px solid var(--brand-100);
+  padding: 1px 7px;
+  border-radius: 999px;
+}
+.memberEmail {
+  font-size: 0.8rem;
+  color: var(--gray-400);
+  margin-top: 1px;
+}
+.metaCell {
+  font-size: 0.8rem !important;
+  color: var(--gray-400) !important;
+}

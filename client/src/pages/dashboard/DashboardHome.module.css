@@ -1,0 +1,174 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 1200px;
+}
+
+.pageHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.pageTitle {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--gray-900);
+  margin-bottom: 4px;
+}
+.pageSubtitle {
+  font-size: 0.875rem;
+  color: var(--gray-500);
+}
+.loader {
+  display: flex;
+  justify-content: center;
+  padding: 80px 0;
+}
+
+/* Stats grid */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+@media (max-width: 1024px) { .statsGrid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px)  { .statsGrid { grid-template-columns: 1fr; } }
+
+.statCard {
+  background: var(--surface);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow .2s, transform .2s;
+}
+.statCard:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.statCardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.statLabel {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.statIconWrap {
+  width: 36px; height: 36px;
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.statValue {
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--gray-900);
+  line-height: 1;
+  margin-bottom: 6px;
+  text-transform: capitalize;
+}
+.statValueSm {
+  font-size: 1.1rem;
+}
+.statTrend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  color: var(--success);
+  font-weight: 500;
+}
+
+/* Content row */
+.contentRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 1024px) { .contentRow { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px) { .contentRow { grid-template-columns: 1fr; } }
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--gray-100);
+}
+.cardHead h3 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--gray-800);
+}
+
+/* Detail list */
+.detailList { display: flex; flex-direction: column; gap: 2px; }
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--gray-50);
+  font-size: 0.845rem;
+}
+.detailRow:last-child { border-bottom: none; }
+.detailRow span:first-child { color: var(--gray-500); }
+.detailRow span:last-child { color: var(--gray-800); font-weight: 500; font-family: monospace; font-size: 0.8rem; }
+
+/* Security list */
+.secList { display: flex; flex-direction: column; gap: 4px; }
+.secRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 0.845rem;
+  color: var(--gray-600);
+}
+
+/* Actions */
+.actionList { display: flex; flex-direction: column; gap: 8px; }
+.actionItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: var(--radius);
+  border: 1px solid var(--gray-100);
+  background: var(--gray-50);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--gray-700);
+  text-decoration: none;
+  transition: background .15s, border-color .15s, box-shadow .15s;
+}
+.actionItem:hover {
+  background: var(--brand-50);
+  border-color: var(--brand-200);
+  color: var(--brand-700);
+  box-shadow: var(--shadow-sm);
+}
+.actionIcon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--surface);
+  border: 1px solid var(--gray-200);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gray-500);
+  flex-shrink: 0;
+}
+.actionArrow {
+  margin-left: auto;
+  color: var(--gray-400);
+  flex-shrink: 0;
+}
+.actionItem:hover .actionArrow { color: var(--brand-500); }

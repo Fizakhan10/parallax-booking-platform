@@ -1,0 +1,231 @@
+/* ═══ AUTH PAGES (shared) ════════════════════════════ */
+
+.page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 480px 1fr;
+}
+@media (max-width: 860px) {
+  .page { grid-template-columns: 1fr; }
+  .panel { display: none; }
+}
+
+/* ── Left panel ───────────────────────────────────── */
+.panel {
+  background: var(--gray-900);
+  position: relative;
+  overflow: hidden;
+}
+.panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(99,102,241,0.25) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(139,92,246,0.15) 0%, transparent 50%);
+}
+.panelContent {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 40px;
+}
+.panelLogo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.03em;
+  text-decoration: none;
+  margin-bottom: auto;
+}
+.panelBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 360px;
+}
+.panelBody h2 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.04em;
+  line-height: 1.2;
+  margin-bottom: 14px;
+}
+.panelBody p {
+  font-size: 0.925rem;
+  color: var(--gray-500);
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+.panelPoints {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.panelPoint {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.875rem;
+  color: var(--gray-400);
+}
+.panelPointDot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--brand-400);
+  flex-shrink: 0;
+}
+.panelFooter {
+  font-size: 0.78rem;
+  color: var(--gray-600);
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+/* ── Right form side ──────────────────────────────── */
+.formSide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  background: var(--gray-50);
+  min-height: 100vh;
+  overflow-y: auto;
+}
+.formBox {
+  width: 100%;
+  max-width: 440px;
+}
+
+.mobileLogo {
+  display: none;
+  align-items: center;
+  gap: 9px;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--gray-900);
+  letter-spacing: -0.03em;
+  text-decoration: none;
+  margin-bottom: 32px;
+}
+@media (max-width: 860px) { .mobileLogo { display: flex; } }
+
+.logoMark {
+  width: 32px; height: 32px;
+  background: var(--brand-600);
+  color: #fff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.formHeader {
+  margin-bottom: 28px;
+}
+.formHeader h1 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--gray-900);
+  margin-bottom: 6px;
+}
+.formHeader p {
+  font-size: 0.9rem;
+  color: var(--gray-500);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* Password wrapper */
+.passwordWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.eyeBtn {
+  position: absolute;
+  right: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gray-400);
+  display: flex;
+  align-items: center;
+  z-index: 1;
+  padding: 4px;
+  border-radius: 4px;
+}
+.eyeBtn:hover { color: var(--gray-600); background: var(--gray-100); }
+
+/* Demo box */
+.demoBox {
+  background: var(--surface);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  margin-bottom: 20px;
+}
+.demoLabel {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gray-400);
+  margin-bottom: 10px;
+}
+.demoGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.demoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 12px;
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius);
+  text-align: left;
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+}
+.demoItem:hover {
+  background: var(--brand-50);
+  border-color: var(--brand-200);
+}
+.demoSlug {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--brand-600);
+  font-family: monospace;
+}
+.demoEmail {
+  font-size: 0.75rem;
+  color: var(--gray-500);
+  margin-bottom: 4px;
+}
+
+.formFooter {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--gray-500);
+}
+.formFooter a {
+  color: var(--brand-600);
+  font-weight: 600;
+}
+.formFooter a:hover { text-decoration: underline; }

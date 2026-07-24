@@ -1,0 +1,289 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+/* ── Sidebar ──────────────────────────────────────── */
+.sidebar {
+  width: 248px;
+  flex-shrink: 0;
+  background: var(--sidebar-bg);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  border-right: 1px solid var(--sidebar-border);
+  z-index: 40;
+  transition: transform 0.25s ease;
+}
+@media (max-width: 900px) {
+  .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    transform: translateX(-100%);
+    box-shadow: var(--shadow-xl);
+  }
+  .sidebarOpen { transform: translateX(0); }
+}
+
+.overlay {
+  display: none;
+}
+@media (max-width: 900px) {
+  .overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 39;
+    backdrop-filter: blur(2px);
+  }
+}
+
+.sidebarHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 18px 16px;
+  border-bottom: 1px solid var(--sidebar-border);
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.03em;
+  text-decoration: none;
+}
+.logoMark {
+  width: 28px; height: 28px;
+  background: var(--brand-600);
+  color: #fff;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.closeSidebar {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 28px; height: 28px;
+  color: var(--gray-500);
+  border-radius: 6px;
+}
+.closeSidebar:hover { background: var(--sidebar-hover); color: var(--gray-300); }
+@media (max-width: 900px) { .closeSidebar { display: flex; } }
+
+/* Workspace badge */
+.workspaceBadge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--sidebar-border);
+}
+.workspaceAvatar {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--brand-600), #7c3aed);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.workspaceInfo { flex: 1; min-width: 0; }
+.workspaceName {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #e2e8f0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.workspaceSlug {
+  font-size: 0.7rem;
+  color: var(--gray-600);
+  font-family: monospace;
+  margin-top: 1px;
+}
+.planBadge { font-size: 0.65rem !important; flex-shrink: 0; }
+
+/* Nav */
+.nav {
+  flex: 1;
+  padding: 16px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.navLabel {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gray-600);
+  padding: 0 10px;
+  margin-bottom: 4px;
+  margin-top: 4px;
+}
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: var(--radius);
+  color: var(--sidebar-text);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+.navItem:hover {
+  background: var(--sidebar-hover);
+  color: #e2e8f0;
+}
+.navActive {
+  background: var(--sidebar-active-bg) !important;
+  color: var(--sidebar-active-text) !important;
+  font-weight: 600;
+}
+
+/* Footer */
+.sidebarFooter {
+  padding: 14px 12px;
+  border-top: 1px solid var(--sidebar-border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+.userAvatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--brand-700);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  border: 2px solid var(--brand-600);
+}
+.userDetails { min-width: 0; }
+.userName {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.userRole {
+  font-size: 0.68rem;
+  color: var(--gray-600);
+  text-transform: capitalize;
+}
+.logoutBtn {
+  width: 30px; height: 30px;
+  border-radius: 7px;
+  color: var(--gray-600);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background .15s, color .15s;
+}
+.logoutBtn:hover { background: rgba(239,68,68,.12); color: #f87171; }
+
+/* ── Main area ────────────────────────────────────── */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Topbar */
+.topbar {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--gray-200);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  flex-shrink: 0;
+}
+.menuBtn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px; height: 36px;
+  border-radius: var(--radius);
+  color: var(--gray-600);
+}
+.menuBtn:hover { background: var(--gray-100); }
+@media (max-width: 900px) { .menuBtn { display: flex; } }
+
+.topbarRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+.topbarIcon {
+  width: 36px; height: 36px;
+  border-radius: var(--radius);
+  color: var(--gray-500);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.topbarIcon:hover { background: var(--gray-100); color: var(--gray-700); }
+.topbarUser {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px 4px 4px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background .15s;
+}
+.topbarUser:hover { background: var(--gray-100); }
+.topbarAvatar {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--brand-600);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.topbarName {
+  font-size: 0.845rem;
+  font-weight: 600;
+  color: var(--gray-700);
+}
+@media (max-width: 480px) { .topbarName { display: none; } }
+
+/* Content */
+.content {
+  flex: 1;
+  padding: 28px;
+  overflow-x: hidden;
+}
+@media (max-width: 640px) { .content { padding: 20px 16px; } }
