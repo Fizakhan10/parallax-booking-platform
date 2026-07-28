@@ -4,20 +4,23 @@ Paralax Lab Internship · Week 1 & 2 Deliverable
 
 A production-grade multi-tenant SaaS boilerplate with full tenant isolation, JWT authentication, subdomain routing, and a complete dashboard UI.
 
----## 📅 Week 2 — Booking APIs & Calendar UI
+## 📅 Week 2 — Booking APIs & Calendar UI
 
 ### What was built
 - Idempotent booking CRUD APIs (create, read, update, delete) with strict Zod validation on all inputs
 - Standardized error response schema across all endpoints
 - Full Postman collection (`postman-collection.json`) documenting every booking endpoint
-- Frontend booking calendar/list view (`BookingsPage.jsx`) with a "Create Booking" form and client-side validation
+- Custom-built booking calendar (`BookingsPage.jsx`) — no third-party calendar library
 - Booking detail view (`BookingDetailPage.jsx`) with edit/delete flows
 - Toast notifications and retry logic for API error handling on the frontend
 - Mobile-responsive booking pages
 
 ### New dependencies
 - `zod` — server-side request validation
-- *(list any client-side libraries you added — e.g. a toast library, date picker, etc.)*
+- `date-fns` — date math for the calendar (month grid generation, formatting, today/past/future checks, grouping bookings by date)
+- `lucide-react` — icons used across the booking UI
+
+The calendar month grid is built from scratch in `booking.utils.js` via `getCalendarGrid()` — pure CSS Grid, no FullCalendar or react-big-calendar.
 
 ### New API endpoints
 
@@ -30,10 +33,10 @@ A production-grade multi-tenant SaaS boilerplate with full tenant isolation, JWT
 | DELETE | /api/bookings/:id | ✓ | Delete booking |
 
 ### Idempotency approach
-*(2-3 sentences: how do you prevent double-bookings on retry — e.g. idempotency key header, unique constraint, etc.)*
+The client generates a UUID v4 before every `POST /api/bookings` call and sends it as `idempotencyKey` in the request body. The server first checks for an existing booking with that `(tenantId, idempotencyKey)` pair — if found, it returns the original booking with a 200 instead of creating a duplicate. A partial unique index on `{ tenantId, idempotencyKey }` in MongoDB acts as the safety net if two identical requests race simultaneously, guaranteeing no double-booking even under concurrent retries.
 
 ### Docker Compose fix (per Week 1 feedback)
-*(1-2 sentences: what did you change so Docker Compose matches your app runtime — e.g. Postgres version match, env var alignment, etc.)*
+The stack was switched from PostgreSQL to MongoDB, but `docker-compose.yml` still defined an unused Postgres service — a mismatch flagged in Week 1 feedback. This has been fixed: `docker-compose.yml` now defines a `mongo:7-jammy` service (port 27017, persisted via a named volume, with a `mongosh` healthcheck) plus an optional `mongo-express` UI gated behind `--profile tools`. Since Docker maps container port 27017 to the host, `MONGODB_URI=mongodb://localhost:27017/multitenant_saas` works identically whether MongoDB runs via Docker or natively — no `.env` changes needed.
 
 ### Testing the booking APIs
 Import `postman-collection.json` into Postman or Insomnia, then run requests against `http://localhost:5000/api/bookings` after starting the server (see "How to Run Locally" above).
