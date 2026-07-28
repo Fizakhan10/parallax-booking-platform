@@ -95,4 +95,15 @@ export const dashboardAPI = {
   users: () => api.get('/api/dashboard/users'),
 }
 
+// ── Bookings ──────────────────────────────────────────────
+export const bookingAPI = {
+  list:         (params) => api.get('/api/bookings', { params }),
+  stats:        ()       => api.get('/api/bookings/stats'),
+  get:          (id)     => api.get(`/api/bookings/${id}`),
+  create:       (data)   => api.post('/api/bookings', data),
+  update:       (id, data) => api.put(`/api/bookings/${id}`, data),
+  updateStatus: (id, status) => api.patch(`/api/bookings/${id}/status`, { status }),
+  delete:       (id)     => api.delete(`/api/bookings/${id}`),
+}
+
 export default api

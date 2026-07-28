@@ -1,0 +1,325 @@
+{
+  "info": {
+    "_postman_id": "tenanthub-week2-bookings",
+    "name": "TenantHub – Booking APIs (Week 2)",
+    "description": "Complete API collection for the TenantHub multi-tenant SaaS booking system.\n\n## Setup\n1. Set `baseUrl` to `http://localhost:5000`\n2. Set `tenantSlug` to `acme`\n3. Run **Login** first — it auto-saves `accessToken`\n\n## Auth\nAll booking endpoints require:\n- `Authorization: Bearer {{accessToken}}`\n- `X-Tenant-Slug: {{tenantSlug}}`",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl",     "value": "http://localhost:5000" },
+    { "key": "tenantSlug",  "value": "acme" },
+    { "key": "accessToken", "value": "" },
+    { "key": "bookingId",   "value": "" }
+  ],
+  "item": [
+    {
+      "name": "🔐 Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const d = pm.response.json();",
+                  "if (d.success && d.data.accessToken) {",
+                  "  pm.collectionVariables.set('accessToken', d.data.accessToken);",
+                  "  pm.test('Login successful', () => pm.response.to.have.status(200));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-Tenant-Slug", "value": "{{tenantSlug}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@acme.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api","auth","login"] }
+          }
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "X-Tenant-Slug", "value": "{{tenantSlug}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/auth/me", "host": ["{{baseUrl}}"], "path": ["api","auth","me"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📅 Bookings",
+      "item": [
+        {
+          "name": "List Bookings",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "X-Tenant-Slug", "value": "{{tenantSlug}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/bookings?page=1&limit=20&sortBy=startTime&sortOrder=asc",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","bookings"],
+              "query": [
+                { "key": "page",      "value": "1" },
+                { "key": "limit",     "value": "20" },
+                { "key": "sortBy",    "value": "startTime" },
+                { "key": "sortOrder", "value": "asc" },
+                { "key": "status",    "value": "confirmed", "disabled": true },
+                { "key": "search",    "value": "consultation", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Bookings – Filter by Status",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "X-Tenant-Slug", "value": "{{tenantSlug}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/bookings?status=pending&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","bookings"],
+              "query": [
+                { "key": "status", "value": "pending" },
+                { "key": "limit",  "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Bookings – Date Range",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "X-Tenant-Slug", "value": "{{tenantSlug}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/bookings?from=2024-01-01T00:00:00.000Z&to=2024-12-31T23:59:59.000Z",
+              "host": ["{{baseUrl}}"],
+              "path": ["api","bookings"],
+              "query": [
+                { "key": "from", "value": "2024-01-01T00:00:00.000Z" },
+                { "key": "to",   "value": "2024-12-31T23:59:59.000Z" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Booking Stats",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "X-Tenant-Slug", "value": "{{tenantSlug}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/bookings/stats", "host": ["{{baseUrl}}"], "path": ["api","bookings","stats"] }
+          }
+        },
+        {
+          "name": "Create Booking (Idempotent)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const d = pm.response.json();",
+                  "if (d.success && d.data.id) {",
+                  "  pm.collectionVariables.set('bookingId', d.data.id);",
+                  "  pm.test('Booking created', () => pm.expect(pm.response.code).to.be.oneOf([200,201]));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "X-Tenant-Slug", "value": "{{tenantSlug}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Strategy Consultation\",\n  \"clientName\": \"Jane Doe\",\n  \"clientEmail\": \"jane@example.com\",\n  \"clientPhone\": \"+1-555-1234\",\n  \"startTime\": \"2024-09-15T10:00:00.000Z\",\n  \"endTime\": \"2024-09-15T11:00:00.000Z\",\n  \"location\": \"Zoom\",\n  \"serviceType\": \"Consultation\",\n  \"description\": \"Initial strategy session for Q4 planning.\",\n  \"notes\": \"Client prefers morning slots.\",\n  \"idempotencyKey\": \"550e8400-e29b-41d4-a716-446655440000\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/bookings", "host": ["{{baseUrl}}"], "path": ["api","bookings"] }
+          }
+        },
+        {
+          "name": "Create Booking (same key = idempotent response)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "X-Tenant-Slug", "value": "{{tenantSlug}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Strategy Consultation\",\n  \"clientName\": \"Jane Doe\",\n  \"clientEmail\": \"jane@example.com\",\n  \"startTime\": \"2024-09-15T10:00:00.000Z\",\n  \"endTime\": \"2024-09-15T11:00:00.000Z\",\n  \"idempotencyKey\": \"550e8400-e29b-41d4-a716-446655440000\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/bookings", "host": ["{{baseUrl}}"], "path": ["api","bookings"] },
+            "description": "Sending the same idempotencyKey returns HTTP 200 with the existing booking instead of creating a duplicate."
+          }
+        },
+        {
+          "name": "Get Single Booking",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "X-Tenant-Slug", "value": "{{tenantSlug}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/bookings/{{bookingId}}", "host": ["{{baseUrl}}"], "path": ["api","bookings","{{bookingId}}"] }
+          }
+        },
+        {
+          "name": "Update Booking",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "X-Tenant-Slug", "value": "{{tenantSlug}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Strategy Consultation\",\n  \"location\": \"Google Meet\",\n  \"notes\": \"Updated notes after rescheduling.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/bookings/{{bookingId}}", "host": ["{{baseUrl}}"], "path": ["api","bookings","{{bookingId}}"] }
+          }
+        },
+        {
+          "name": "Update Status – Confirm",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "X-Tenant-Slug", "value": "{{tenantSlug}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{ \"status\": \"confirmed\" }" },
+            "url": { "raw": "{{baseUrl}}/api/bookings/{{bookingId}}/status", "host": ["{{baseUrl}}"], "path": ["api","bookings","{{bookingId}}","status"] }
+          }
+        },
+        {
+          "name": "Update Status – Cancel",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "X-Tenant-Slug", "value": "{{tenantSlug}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{ \"status\": \"cancelled\" }" },
+            "url": { "raw": "{{baseUrl}}/api/bookings/{{bookingId}}/status", "host": ["{{baseUrl}}"], "path": ["api","bookings","{{bookingId}}","status"] }
+          }
+        },
+        {
+          "name": "Delete Booking",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "X-Tenant-Slug", "value": "{{tenantSlug}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/api/bookings/{{bookingId}}", "host": ["{{baseUrl}}"], "path": ["api","bookings","{{bookingId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "⚠️ Validation Errors",
+      "item": [
+        {
+          "name": "Create – Missing required fields",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "X-Tenant-Slug", "value": "{{tenantSlug}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{ \"title\": \"x\" }" },
+            "url": { "raw": "{{baseUrl}}/api/bookings", "host": ["{{baseUrl}}"], "path": ["api","bookings"] },
+            "description": "Returns HTTP 422 with Zod validation error array"
+          }
+        },
+        {
+          "name": "Create – End before start",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "X-Tenant-Slug", "value": "{{tenantSlug}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Bad Booking\",\n  \"clientName\": \"Test\",\n  \"clientEmail\": \"t@t.com\",\n  \"startTime\": \"2024-09-15T11:00:00.000Z\",\n  \"endTime\":   \"2024-09-15T09:00:00.000Z\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/bookings", "host": ["{{baseUrl}}"], "path": ["api","bookings"] }
+          }
+        },
+        {
+          "name": "Create – Invalid idempotencyKey",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "X-Tenant-Slug", "value": "{{tenantSlug}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Test\", \"clientName\": \"Test\", \"clientEmail\": \"t@t.com\",\n  \"startTime\": \"2024-09-15T10:00:00.000Z\", \"endTime\": \"2024-09-15T11:00:00.000Z\",\n  \"idempotencyKey\": \"not-a-uuid\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/bookings", "host": ["{{baseUrl}}"], "path": ["api","bookings"] }
+          }
+        },
+        {
+          "name": "Update Status – Invalid value",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "X-Tenant-Slug", "value": "{{tenantSlug}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{ \"status\": \"invalid_status\" }" },
+            "url": { "raw": "{{baseUrl}}/api/bookings/{{bookingId}}/status", "host": ["{{baseUrl}}"], "path": ["api","bookings","{{bookingId}}","status"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏥 Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/health", "host": ["{{baseUrl}}"], "path": ["health"] }
+          }
+        }
+      ]
+    }
+  ]
+}

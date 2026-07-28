@@ -8,6 +8,7 @@ import env from "./config/env.js";
 import authRoutes from "./routes/auth.routes.js";
 import tenantRoutes from "./routes/tenant.routes.js";
 import dashboardRoutes from "./routes/dashboard.routes.js";
+import bookingRoutes from "./routes/booking.routes.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
 const app = express();
@@ -56,6 +57,7 @@ app.get("/health", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/tenants", tenantRoutes);
 app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/bookings", bookingRoutes);
 
 // ─── Errors ────────────────────────────────────────────────
 app.use(notFound);
