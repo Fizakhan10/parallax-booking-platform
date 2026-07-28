@@ -1,10 +1,42 @@
 # TenantHub — Multi-Tenant SaaS Platform
 
-**Paralax Lab Internship · Week 1 Deliverable**
+Paralax Lab Internship · Week 1 & 2 Deliverable
 
 A production-grade multi-tenant SaaS boilerplate with full tenant isolation, JWT authentication, subdomain routing, and a complete dashboard UI.
 
----
+---## 📅 Week 2 — Booking APIs & Calendar UI
+
+### What was built
+- Idempotent booking CRUD APIs (create, read, update, delete) with strict Zod validation on all inputs
+- Standardized error response schema across all endpoints
+- Full Postman collection (`postman-collection.json`) documenting every booking endpoint
+- Frontend booking calendar/list view (`BookingsPage.jsx`) with a "Create Booking" form and client-side validation
+- Booking detail view (`BookingDetailPage.jsx`) with edit/delete flows
+- Toast notifications and retry logic for API error handling on the frontend
+- Mobile-responsive booking pages
+
+### New dependencies
+- `zod` — server-side request validation
+- *(list any client-side libraries you added — e.g. a toast library, date picker, etc.)*
+
+### New API endpoints
+
+| Method | Path | Auth Required | Description |
+|--------|------|----------------|-------------|
+| POST | /api/bookings | ✓ | Create booking (idempotent) |
+| GET | /api/bookings | ✓ | List bookings |
+| GET | /api/bookings/:id | ✓ | Get booking detail |
+| PUT | /api/bookings/:id | ✓ | Update booking |
+| DELETE | /api/bookings/:id | ✓ | Delete booking |
+
+### Idempotency approach
+*(2-3 sentences: how do you prevent double-bookings on retry — e.g. idempotency key header, unique constraint, etc.)*
+
+### Docker Compose fix (per Week 1 feedback)
+*(1-2 sentences: what did you change so Docker Compose matches your app runtime — e.g. Postgres version match, env var alignment, etc.)*
+
+### Testing the booking APIs
+Import `postman-collection.json` into Postman or Insomnia, then run requests against `http://localhost:5000/api/bookings` after starting the server (see "How to Run Locally" above).
 
 ## 🗂 What Was Built
 
@@ -332,4 +364,4 @@ docker-compose down -v && docker-compose up -d
 
 ---
 
-*Built for Paralax Lab Internship — Week 1 · Multi-Tenant SaaS Platform*
+Built for Paralax Lab Internship — Week 1 & 2 · Multi-Tenant SaaS Platform
