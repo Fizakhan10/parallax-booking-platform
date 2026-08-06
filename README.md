@@ -6,10 +6,48 @@ A production-grade multi-tenant SaaS platform with full tenant isolation, JWT au
 
 ---
 
-## 🗂 What Was Built
+## 📅 Week 2 — Booking APIs & Calendar UI
+
+### What was built
+- Idempotent booking CRUD APIs (create, read, update, delete) with strict Zod validation on all inputs
+- Standardized error response schema across all endpoints
+- Full Postman collection (`postman-collection.json`) documenting every booking endpoint
+- Custom-built booking calendar (`BookingsPage.jsx`) — no third-party calendar library
+- Booking detail view (`BookingDetailPage.jsx`) with edit/delete flows
+- Toast notifications and retry logic for API error handling on the frontend
+- Mobile-responsive booking pages
+
+### New dependencies
+- `zod` — server-side request validation
+- `date-fns` — date math for the calendar (month grid generation, formatting, today/past/future checks, grouping bookings by date)
+- `lucide-react` — icons used across the booking UI
+
+The calendar month grid is built from scratch in `booking.utils.js` via `getCalendarGrid()` — pure CSS Grid, no FullCalendar or react-big-calendar.
+
+### New API endpoints
+
+| Method | Path | Auth Required | Description |
+|--------|------|----------------|-------------|
+| POST | /api/bookings | ✓ | Create booking (idempotent) |
+| GET | /api/bookings | ✓ | List bookings |
+| GET | /api/bookings/:id | ✓ | Get booking detail |
+| PUT | /api/bookings/:id | ✓ | Update booking |
+| DELETE | /api/bookings/:id | ✓ | Delete booking |
+
+### Idempotency approach
+The client generates a UUID v4 before every `POST /api/bookings` call and sends it as `idempotencyKey` in the request body. The server first checks for an existing booking with that `(tenantId, idempotencyKey)` pair — if found, it returns the original booking with a 200 instead of creating a duplicate. A partial unique index on `{ tenantId, idempotencyKey }` in MongoDB acts as the safety net if two identical requests race simultaneously, guaranteeing no double-booking even under concurrent retries.
+
+### Docker Compose fix (per Week 1 feedback)
+The stack was switched from PostgreSQL to MongoDB, but `docker-compose.yml` still defined an unused Postgres service — a mismatch flagged in Week 1 feedback. This has been fixed: `docker-compose.yml` now defines a `mongo:7-jammy` service (port 27017, persisted via a named volume, with a `mongosh` healthcheck) plus an optional `mongo-express` UI gated behind `--profile tools`. Since Docker maps container port 27017 to the host, `MONGODB_URI=mongodb://localhost:27017/multitenant_saas` works identically whether MongoDB runs via Docker or natively — no `.env` changes needed.
+
+### Testing the booking APIs
+Import `postman-collection.json` into Postman or Insomnia, then run requests against `http://localhost:5000/api/bookings` after starting the server (see "How to Run Locally" below).
+
+---
+
+## 🗂 What Was Built (Week 1)
 
 ### Architecture Overview
-
 ```
 ┌──────────────────────────┐        ┌────────────────────────────────────┐
 │   React 19 + Vite        │ ─────▶ │   Express 5 API Server             │
@@ -78,8 +116,6 @@ A production-grade multi-tenant SaaS platform with full tenant isolation, JWT au
 - Invoice history table with PDF download links
 - Webhook-driven UI updates (plan & status auto-update after Stripe callback)
 
----
-
 ## 🚀 How to Run Locally
 
 ### Prerequisites
@@ -89,7 +125,6 @@ A production-grade multi-tenant SaaS platform with full tenant isolation, JWT au
 - Stripe account (free test mode)
 
 ### Step 1 — Clone & install dependencies
-
 ```bash
 git clone https://github.com/Fizakhan10/parallax-booking-platform
 cd parallax-booking-platform
@@ -116,6 +151,7 @@ No action needed — the default `MONGODB_URI` connects to `localhost:27017`.
 cd server
 cp .env.example .env
 ```
+⚠️ In production, replace all secrets with strong random values.
 
 Edit `server/.env`:
 
@@ -180,9 +216,8 @@ cd client && npm run dev
 | Health    | http://localhost:5000/health     |
 | Mongo UI  | http://localhost:8081 (optional) |
 
----
-
 ## 🧪 Test Credentials
+All test users have password: `password123`
 
 Password for all accounts: **`password123`**
 
@@ -270,10 +305,7 @@ docker-compose --profile tools up -d mongo-express
 docker-compose down -v && docker-compose up -d
 ```
 
----
-
 ## 📁 Project Structure
-
 ```
 ├── client/src/
 │   ├── components/bookings/     # BookingFormModal
