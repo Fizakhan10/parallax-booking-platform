@@ -3,13 +3,14 @@ import { Outlet, NavLink, Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import {
   Layers, LayoutDashboard, Users, Settings,
-  LogOut, ChevronDown, Menu, X, Bell, CalendarDays
+  LogOut, ChevronDown, Menu, X, Bell, CalendarDays, CreditCard
 } from 'lucide-react'
 import styles from './DashboardLayout.module.css'
 
 const navItems = [
   { to: '/dashboard',           label: 'Overview', icon: LayoutDashboard, end: true },
   { to: '/dashboard/bookings',  label: 'Bookings', icon: CalendarDays },
+  { to: '/dashboard/billing',   label: 'Billing',  icon: CreditCard },
   { to: '/dashboard/users',     label: 'Team',     icon: Users },
   { to: '/dashboard/settings',  label: 'Settings', icon: Settings },
 ]

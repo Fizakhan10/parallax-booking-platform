@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 
-// Resolve .env relative to this file (server/src/config/env.js → server/.env)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 dotenv.config({ path: join(__dirname, "../../.env") });
@@ -24,6 +23,16 @@ const env = cleanEnv(process.env, {
 
   BASE_DOMAIN: str({ default: "localhost:5173" }),
   SUBDOMAIN_ENABLED: bool({ default: false }),
+
+  // Stripe
+  STRIPE_SECRET_KEY:      str({ docs: "Stripe secret API key" }),
+  STRIPE_PUBLISHABLE_KEY: str({ docs: "Stripe publishable key" }),
+  STRIPE_WEBHOOK_SECRET:  str({ docs: "Stripe webhook signing secret" }),
+
+  // Stripe Price IDs
+  STRIPE_PRICE_STARTER:    str({ default: "" }),
+  STRIPE_PRICE_PRO:        str({ default: "" }),
+  STRIPE_PRICE_ENTERPRISE: str({ default: "" }),
 });
 
 export default env;

@@ -1,0 +1,246 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 1100px;
+}
+.loadingPage {
+  display: flex; justify-content: center; padding: 80px;
+}
+
+/* ── Header ───────────────────────────────────────── */
+.pageHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.pageTitle    { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.04em; color: var(--gray-900); margin-bottom: 3px; }
+.pageSubtitle { font-size: 0.875rem; color: var(--gray-500); }
+
+/* ── Current plan card ────────────────────────────── */
+.currentPlanCard {
+  background: var(--surface);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  box-shadow: var(--shadow-sm);
+}
+.currentPlanLeft {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.currentPlanIcon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: var(--brand-50);
+  color: var(--brand-600);
+  border: 1px solid var(--brand-100);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.currentPlanName {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 5px;
+}
+.currentPlanMeta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.renewalDate {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  color: var(--gray-500);
+}
+.currentPlanActions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* ── Plans grid ───────────────────────────────────── */
+.plansSection {}
+.sectionTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gray-800);
+  margin-bottom: 16px;
+}
+.plansGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 1024px) { .plansGrid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px)  { .plansGrid { grid-template-columns: 1fr; } }
+
+.planCard {
+  background: var(--surface);
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  position: relative;
+  transition: box-shadow .2s, transform .2s;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.planCard:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.planHighlighted {
+  border-color: var(--brand-400);
+  box-shadow: 0 0 0 1px var(--brand-300), var(--shadow-md);
+}
+.planCurrent {
+  border-color: var(--success);
+  background: linear-gradient(to bottom, #f0fdf4, #fff);
+}
+
+.popularBadge {
+  position: absolute;
+  top: -12px; left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--brand-600);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+.currentBadge {
+  position: absolute;
+  top: -12px; left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--success);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.planHeader {}
+.planIcon {
+  width: 36px; height: 36px;
+  border-radius: 9px;
+  background: var(--brand-50);
+  color: var(--brand-600);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 10px;
+  border: 1px solid var(--brand-100);
+}
+.planName {
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--gray-600);
+  margin-bottom: 3px;
+}
+.planDesc { font-size: 0.8rem; color: var(--gray-500); }
+
+.planPricing {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+}
+.planPrice {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--gray-900);
+  line-height: 1;
+}
+.planPeriod { font-size: 0.85rem; color: var(--gray-400); }
+
+.planFeatures {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+.planFeatures li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.835rem;
+  color: var(--gray-600);
+}
+.planFeatures li svg { color: var(--success); flex-shrink: 0; }
+
+.currentBtn {
+  background: var(--success-bg) !important;
+  color: var(--success-text) !important;
+  border-color: #a7f3d0 !important;
+  cursor: default;
+}
+
+/* ── Security note ────────────────────────────────── */
+.securityNote {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: var(--gray-400);
+}
+.securityNote svg { color: var(--success); }
+
+/* ── Invoices ─────────────────────────────────────── */
+.invoicesSection {}
+.invoiceTable {
+  background: var(--surface);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.invoiceDesc {
+  font-size: 0.845rem;
+  color: var(--gray-700);
+  max-width: 260px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.invoiceAmount {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--gray-900);
+}
+.invoiceActions { display: flex; gap: 4px; }
+.emptyInvoices {
+  text-align: center;
+  padding: 60px 24px;
+  color: var(--gray-400);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+}
+.emptyInvoices p { font-size: 0.875rem; max-width: 300px; }

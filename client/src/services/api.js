@@ -106,4 +106,15 @@ export const bookingAPI = {
   delete:       (id)     => api.delete(`/api/bookings/${id}`),
 }
 
+// ── Billing ───────────────────────────────────────────────
+export const billingAPI = {
+  plans:       ()       => api.get('/api/billing/plans'),
+  status:      ()       => api.get('/api/billing/status'),
+  invoices:    ()       => api.get('/api/billing/invoices'),
+  checkout:    (plan)   => api.post('/api/billing/checkout', { plan }),
+  portal:      ()       => api.post('/api/billing/portal'),
+  cancel:      ()       => api.post('/api/billing/cancel'),
+  reactivate:  ()       => api.post('/api/billing/reactivate'),
+}
+
 export default api

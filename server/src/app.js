@@ -9,6 +9,7 @@ import authRoutes from "./routes/auth.routes.js";
 import tenantRoutes from "./routes/tenant.routes.js";
 import dashboardRoutes from "./routes/dashboard.routes.js";
 import bookingRoutes from "./routes/booking.routes.js";
+import billingRoutes from "./routes/billing.routes.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
 const app = express();
@@ -18,7 +19,7 @@ app.use(helmet());
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100,
+  max: 200,
   standardHeaders: true,
   legacyHeaders: false,
   message: { success: false, message: "Too many requests, please try again later" },
@@ -38,7 +39,11 @@ app.use(
   })
 );
 
-// ─── Body parsing ──────────────────────────────────────────
+// ── IMPORTANT: Stripe webhook MUST be mounted BEFORE express.json()
+// The webhook handler uses express.raw() internally for signature verification
+app.use("/api/billing", billingRoutes);
+
+// ─── Body parsing (after webhook route) ───────────────────
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(env.COOKIE_SECRET));
@@ -54,10 +59,10 @@ app.get("/health", (req, res) => {
   });
 });
 
-app.use("/api/auth", authRoutes);
-app.use("/api/tenants", tenantRoutes);
+app.use("/api/auth",      authRoutes);
+app.use("/api/tenants",   tenantRoutes);
 app.use("/api/dashboard", dashboardRoutes);
-app.use("/api/bookings", bookingRoutes);
+app.use("/api/bookings",  bookingRoutes);
 
 // ─── Errors ────────────────────────────────────────────────
 app.use(notFound);

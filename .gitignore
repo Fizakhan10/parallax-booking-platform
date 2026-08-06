@@ -1,4 +1,29 @@
-node_modules
+# Dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Environment files — NEVER commit real secrets
 .env
-dist
-build
+server/.env
+client/.env
+# DO commit the example files
+!server/.env.example
+!client/.env.example
+
+# Build output
+dist/
+build/
+client/dist/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/settings.json
+*.swp

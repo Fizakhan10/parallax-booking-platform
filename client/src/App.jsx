@@ -11,6 +11,7 @@ import DashboardUsers from './pages/dashboard/DashboardUsers'
 import DashboardSettings from './pages/dashboard/DashboardSettings'
 import BookingsPage from './pages/dashboard/BookingsPage'
 import BookingDetailPage from './pages/dashboard/BookingDetailPage'
+import BillingPage from './pages/dashboard/BillingPage'
 
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth()
@@ -59,6 +60,7 @@ export default function App() {
             <Route index              element={<DashboardHome />} />
             <Route path="bookings"    element={<BookingsPage />} />
             <Route path="bookings/:id" element={<BookingDetailPage />} />
+            <Route path="billing"     element={<BillingPage />} />
             <Route path="users"       element={<DashboardUsers />} />
             <Route path="settings"    element={<DashboardSettings />} />
           </Route>
