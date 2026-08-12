@@ -1,0 +1,133 @@
+/* ── Wrapper ──────────────────────────────────────────────────────────────── */
+.editorWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--gray-200, #e5e7eb);
+  border-radius: var(--radius, 8px);
+  background: var(--white, #fff);
+  overflow: hidden;
+}
+
+/* ── Status bar ────────────────────────────────────────────────────────────── */
+.statusBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  background: var(--gray-50, #f9fafb);
+  border-bottom: 1px solid var(--gray-200, #e5e7eb);
+  font-size: 0.72rem;
+  min-height: 32px;
+}
+.statusIndicator { display: flex; align-items: center; gap: 6px; color: var(--gray-500, #6b7280); font-weight: 500; }
+.statusDot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.statusDot[data-status="connected"]    { background: #22c55e; }
+.statusDot[data-status="connecting"]   { background: #f59e0b; animation: pulse 1.2s infinite; }
+.statusDot[data-status="reconnecting"] { background: #f97316; animation: pulse 0.8s infinite; }
+.statusDot[data-status="failed"]       { background: #ef4444; }
+.statusDot[data-status="unsupported"]  { background: #9ca3af; }
+.statusDot[data-status="idle"]         { background: #d1d5db; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+/* ── Toolbar ───────────────────────────────────────────────────────────────── */
+.toolbar {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 2px;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--gray-200, #e5e7eb);
+  background: var(--gray-50, #f9fafb);
+}
+.toolbarBtn {
+  display: flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px;
+  border: none; border-radius: 5px; background: transparent;
+  color: var(--gray-600, #4b5563); cursor: pointer;
+  transition: background .12s, color .12s; flex-shrink: 0;
+}
+.toolbarBtn:hover:not(:disabled) { background: var(--gray-200, #e5e7eb); color: var(--gray-900, #111827); }
+.toolbarBtn:disabled              { opacity: .35; cursor: not-allowed; }
+.toolbarBtnActive                 { background: var(--brand-100, #ede9fe); color: var(--brand-700, #6d28d9); }
+.toolbarBtnActive:hover:not(:disabled) { background: var(--brand-200, #ddd6fe); }
+.toolbarDivider { width: 1px; height: 20px; background: var(--gray-200, #e5e7eb); margin: 0 4px; flex-shrink: 0; }
+
+/* ── Avatar strip ──────────────────────────────────────────────────────────── */
+.avatarStrip { display: flex; align-items: center; }
+.avatarChip {
+  width: 26px; height: 26px; border-radius: 50%; border: 2px solid #fff;
+  display: flex; align-items: center; justify-content: center;
+  cursor: default; flex-shrink: 0; margin-left: -6px;
+  transition: transform .15s; box-shadow: 0 1px 3px rgba(0,0,0,.15);
+}
+.avatarChip:first-child { margin-left: 0; }
+.avatarChip:hover       { transform: translateY(-2px); z-index: 10; }
+.avatarImg              { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+.avatarInitials         { font-size: .6rem; font-weight: 700; color: #fff; line-height: 1; }
+.avatarOverflow {
+  width: 26px; height: 26px; border-radius: 50%; border: 2px solid #fff;
+  background: var(--gray-400, #9ca3af); color: #fff;
+  font-size: .6rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  margin-left: -6px; cursor: default; box-shadow: 0 1px 3px rgba(0,0,0,.15);
+}
+
+/* ── Editor content ────────────────────────────────────────────────────────── */
+.editorScroll { position: relative; flex: 1; overflow-y: auto; min-height: 200px; max-height: 480px; }
+.editorInner  { position: relative; }
+.editorInput  {
+  min-height: 200px; padding: 14px 16px;
+  font-size: .9rem; line-height: 1.75; color: var(--gray-800, #1f2937);
+  outline: none; caret-color: var(--brand-600, #7c3aed);
+}
+.editorInput p              { margin: 0 0 8px; }
+.editorInput p:last-child   { margin-bottom: 0; }
+.editorInput ul, .editorInput ol { padding-left: 22px; margin: 0 0 8px; }
+.editorInput li             { margin-bottom: 3px; }
+.editorInput a              { color: var(--brand-600, #7c3aed); text-decoration: underline; }
+.editorPlaceholder {
+  position: absolute; top: 14px; left: 16px;
+  color: var(--gray-400, #9ca3af); font-size: .9rem;
+  pointer-events: none; user-select: none;
+}
+
+/* ── Remote cursors ────────────────────────────────────────────────────────── */
+.remoteCursor  { position: absolute; pointer-events: none; z-index: 20; transform: translateX(-1px); }
+.cursorCaret   { width: 2px; height: 1.2em; background: var(--cursor-color, #6366f1); border-radius: 1px; }
+.cursorLabel   {
+  position: absolute; top: -1.35em; left: 0;
+  background: var(--cursor-color, #6366f1); color: #fff;
+  font-size: .65rem; font-weight: 600; padding: 1px 5px;
+  border-radius: 3px; white-space: nowrap; line-height: 1.5;
+}
+
+/* ── Footer ────────────────────────────────────────────────────────────────── */
+.editorFooter {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 5px 12px;
+  border-top: 1px solid var(--gray-100, #f3f4f6);
+  font-size: .7rem; color: var(--gray-400, #9ca3af);
+  background: var(--gray-50, #f9fafb); gap: 12px;
+}
+.wordCount       { font-variant-numeric: tabular-nums; }
+.autoSaveStatus  { display: flex; align-items: center; gap: 5px; }
+
+/* ── Fallback ──────────────────────────────────────────────────────────────── */
+.fallbackWrapper  { display: flex; flex-direction: column; gap: 0; }
+.fallbackBanner   {
+  display: flex; align-items: center; gap: 8px; padding: 8px 14px;
+  background: #fff7ed; border-bottom: 1px solid #fed7aa;
+  font-size: .8rem; color: #92400e;
+}
+.fallbackBannerIcon { flex-shrink: 0; }
+.fallbackTextarea {
+  width: 100%; min-height: 220px; padding: 14px 16px;
+  font-size: .9rem; line-height: 1.75; color: var(--gray-800, #1f2937);
+  border: none; resize: vertical; outline: none;
+  font-family: inherit; background: var(--white, #fff); box-sizing: border-box;
+}
+.fallbackTextarea:focus { box-shadow: inset 0 0 0 2px var(--brand-400, #a78bfa); }
+
+/* ── Responsive ────────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .toolbar { gap: 1px; padding: 4px 6px; }
+  .toolbarBtn { width: 26px; height: 26px; }
+}
