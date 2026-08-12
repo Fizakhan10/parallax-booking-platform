@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import {
@@ -12,6 +12,7 @@ import {
   fmtDate, fmtTime, fmtRelative, getDuration
 } from '../../utils/booking.utils'
 import BookingFormModal from '../../components/bookings/BookingFormModal'
+import CollaborativeEditor from '../../components/collaboration/CollaborativeEditor'
 import styles from './BookingDetailPage.module.css'
 
 export default function BookingDetailPage() {
@@ -23,6 +24,12 @@ export default function BookingDetailPage() {
   const [error, setError]       = useState(null)
   const [showEdit, setShowEdit] = useState(false)
   const [statusLoading, setStatusLoading] = useState(false)
+
+  // Auto-save collaborative notes back to the booking record
+  const handleNotesSave = useCallback(async (plainText) => {
+    try { await bookingAPI.update(id, { notes: plainText }) }
+    catch (err) { console.warn('[BookingDetailPage] Notes save failed:', err.message) }
+  }, [id])
 
   const load = async () => {
     setLoading(true)
@@ -154,25 +161,25 @@ export default function BookingDetailPage() {
             </div>
           </div>
 
-          {/* Description & Notes */}
-          {(booking.description || booking.notes) && (
+          {/* Description */}
+          {booking.description && (
             <div className="card" style={{ marginBottom: 0 }}>
-              {booking.description && (
-                <div style={{ marginBottom: booking.notes ? 16 : 0 }}>
-                  <div className={styles.sectionTitle}>Description</div>
-                  <p className={styles.bodyText}>{booking.description}</p>
-                </div>
-              )}
-              {booking.notes && (
-                <div>
-                  <div className={styles.sectionTitle}>Internal Notes</div>
-                  <p className={styles.bodyText} style={{ background: 'var(--warning-bg)', borderRadius: 'var(--radius)', padding: '10px 14px', color: 'var(--warning-text)', border: '1px solid var(--warning-bg)' }}>
-                    {booking.notes}
-                  </p>
-                </div>
-              )}
+              <div className={styles.sectionTitle}>Description</div>
+              <p className={styles.bodyText}>{booking.description}</p>
             </div>
           )}
+
+          {/* Collaborative Notes Editor */}
+          <div className="card" style={{ marginBottom: 0, padding: 0, overflow: 'hidden' }}>
+            <div style={{ padding: '14px 16px 10px', borderBottom: '1px solid var(--gray-100)' }}>
+              <div className={styles.sectionTitle} style={{ marginBottom: 0 }}>Internal Notes</div>
+            </div>
+            <CollaborativeEditor
+              bookingId={booking.id}
+              initialContent={booking.notes || ''}
+              onSave={handleNotesSave}
+            />
+          </div>
         </div>
 
         {/* ── Client sidebar ── */}
