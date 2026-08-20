@@ -17,6 +17,28 @@ A production-grade multi-tenant SaaS platform with full tenant isolation, JWT au
 - **Graceful fallback** — if WebSocket is unavailable or all 3 reconnection attempts fail, the editor silently degrades to a plain `<textarea>` with a non-blocking banner and continues auto-saving via REST
 - **Automated tests** — 4 backend test files (roomManager, presenceManager, conflict resolution, disconnection edge cases) + 2 frontend test files (CollaborativeEditor states, PresenceOverlay rendering)
 
+- ---
+
+## ⚡ Week 5 — Redis Caching & Graceful Degradation
+
+A high-performance caching layer integrated into the MERN stack to reduce database load and ensure resilience against cache failures.
+
+### What was built
+* **Redis Cache Layer**: Configured via Docker (`docker-compose.yml`) with persistent storage (`appendonly yes`)[cite: 1].
+* **Cache-Aside Strategy**: Backend checks Redis first for tenant settings; on a cache miss, fetches from MongoDB and rehydrates the cache with a 1-hour TTL[cite: 1].
+* **Graceful Degradation**: Robust error handlers ensure that if the Redis container goes down, the system seamlessly falls back to MongoDB without crashing the API[cite: 1].
+* **UI Visual Indicators**: Frontend displays real-time connection status (`⚡ Active (Redis Cache)` vs `🗄️ Fallback (MongoDB)`).
+
+### Modified files
+
+| File | Change |
+| :--- | :--- |
+| `docker-compose.yml` | Added `redis:alpine` service, port `6379`, healthchecks, and `redis_data` volume[cite: 1] |
+| `server/src/utils/redisClient.js` | Created Redis client instance with connection status tracking and error fallback handlers[cite: 1] |
+| `server/src/controllers/settingsController.js` | Implemented cache-aside retrieval, 1-hour TTL caching, and update invalidation logic[cite: 1] |
+| `client/src/components/TenantSettings.jsx` | Added visual indicator banner showing live cache vs DB fallback status |
+| `client/src/tests/settings.test.js` | Added React testing library unit tests asserting UI state for cache hits and DB fallbacks |
+
 ### New files
 
 ```
