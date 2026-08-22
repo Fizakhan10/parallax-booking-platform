@@ -1,0 +1,143 @@
+.errorContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.errorContent {
+  background: white;
+  border-radius: 16px;
+  padding: 3rem 2rem;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.errorIcon {
+  color: #ef4444;
+  margin-bottom: 1.5rem;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.errorCode {
+  font-size: 5rem;
+  font-weight: 800;
+  margin: 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+
+.errorTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 1rem 0 0.5rem;
+  color: #1f2937;
+}
+
+.errorMessage {
+  font-size: 1rem;
+  color: #6b7280;
+  margin: 0 0 0.5rem;
+  line-height: 1.6;
+}
+
+.errorDetails {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  margin: 0 0 2rem;
+  font-style: italic;
+}
+
+.errorActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.primaryButton {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.primaryButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.secondaryButton {
+  padding: 0.75rem 1.5rem;
+  background: white;
+  color: #667eea;
+  border: 2px solid #667eea;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.secondaryButton:hover {
+  background: #f3f4f6;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 640px) {
+  .errorContent {
+    padding: 2rem 1.5rem;
+  }
+
+  .errorCode {
+    font-size: 4rem;
+  }
+
+  .errorTitle {
+    font-size: 1.5rem;
+  }
+
+  .errorActions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    width: 100%;
+  }
+}

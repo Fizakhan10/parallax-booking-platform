@@ -10,6 +10,7 @@ import tenantRoutes from "./routes/tenant.routes.js";
 import dashboardRoutes from "./routes/dashboard.routes.js";
 import bookingRoutes from "./routes/booking.routes.js";
 import billingRoutes from "./routes/billing.routes.js";
+import healthRoutes from "./routes/health.routes.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
 const app = express();
@@ -49,15 +50,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(env.COOKIE_SECRET));
 
 // ─── Routes ────────────────────────────────────────────────
-app.get("/health", (req, res) => {
-  res.json({
-    success: true,
-    message: "Multi-Tenant SaaS API is running 🚀",
-    db: "MongoDB",
-    environment: env.NODE_ENV,
-    timestamp: new Date().toISOString(),
-  });
-});
+// Health checks (must be before auth middleware for monitoring)
+app.use(healthRoutes);
 
 app.use("/api/auth",      authRoutes);
 app.use("/api/tenants",   tenantRoutes);

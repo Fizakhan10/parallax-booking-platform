@@ -12,6 +12,8 @@ import DashboardSettings from './pages/dashboard/DashboardSettings'
 import BookingsPage from './pages/dashboard/BookingsPage'
 import BookingDetailPage from './pages/dashboard/BookingDetailPage'
 import BillingPage from './pages/dashboard/BillingPage'
+import NotFoundPage from './pages/NotFoundPage'
+import ErrorPage from './pages/ErrorPage'
 
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth()
@@ -55,6 +57,7 @@ export default function App() {
           <Route path="/login"    element={<PublicRoute><LoginPage /></PublicRoute>} />
           <Route path="/register" element={<PublicRoute><RegisterPage /></PublicRoute>} />
           <Route path="/onboard"  element={<PublicRoute><OnboardPage /></PublicRoute>} />
+          <Route path="/error"    element={<ErrorPage />} />
 
           <Route path="/dashboard" element={<PrivateRoute><DashboardLayout /></PrivateRoute>}>
             <Route index              element={<DashboardHome />} />
@@ -65,9 +68,10 @@ export default function App() {
             <Route path="settings"    element={<DashboardSettings />} />
           </Route>
 
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
   )
 }
+
